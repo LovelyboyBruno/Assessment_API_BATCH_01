@@ -2,31 +2,49 @@ const mongoose = require('mongoose');
  const submissionSchema = new mongoose.Schema({
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true,
     },
 
     assessmentId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Assessment"
+        ref: "Assessment",
+        required: true,
     },
 
     answers: [
         {
-            questionId: String,
-            answer: String
-        }
+            questionId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Question",
+                required: true,
+            },
+
+            answer: {
+                type: String,
+                required: true,
+            },
+        },
     ],
+    score: {
+        type: Number,
+        default: 0,
+    },
 
     status: {
         type: String,
         enum: [
             "submitted",
             "pending_review",
-            "scored"
+            "scored",
         ],
-        default: "submitted"
-    }
-});
+        default: "submitted",
+    },
+},
+{
+    timestamps: true,
+}
+);
 
 module.exports = mongoose.model(
     "Submission",

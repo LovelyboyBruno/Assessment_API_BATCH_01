@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 console.log("Auth Controller Loaded");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     const { name, email, password, role } = req.body;
 
     const userExists = await User.findOne({ email });

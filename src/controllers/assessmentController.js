@@ -1,7 +1,7 @@
 const Assessment = require("../models/Assessment");
 
 //Create Assessment
-const createAssessment = async (req,res) => {
+const createAssessment = async (req,res, next) => {
     try {
         const { title, description } = req.body;
         const assessment = await Assessment.create({
@@ -12,28 +12,48 @@ const createAssessment = async (req,res) => {
 
         res.status(201).json(assessment);
     } catch (error) {
-        res.status(500).json({
-            message: error.message,
-        });
+        next(error);
     }
 };
 
 //Get All Assessments
-const getAssessments = async (req, res) => {
+const getAssessments = async (req, res, next) => {
     try {
-        const assessments = await Assessment.find()
-        .populate("createdBy", "name email");
 
-        res.json(assessments);
-    } catch (error) {
-        res.status(500).json({
-            message: error.message,
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || "";
+
+        const skip = (page -1) * limit;
+
+        const filter = {
+            title: {
+                $regex: search,
+                $options: "i",
+            },
+        };
+
+        const assessments = await Assessment.find(filter)
+        .populate("createdBy", "name email")
+        .skip(skip)
+        .limit(limit);
+
+        const total = await Assessment.countDocuments(filter);
+
+        res.json({
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalAssessments: total,
+            assessments,
         });
+
+    } catch (error) {
+      next(error);
     }
 };
 
 //Update Assessment
-const updateAssessment = async (req, res) => {
+const updateAssessment = async (req, res, next) => {
     try {
         const assessment = await Assessment.findByIdAndUpdate(
             req.params.id,
@@ -49,14 +69,12 @@ const updateAssessment = async (req, res) => {
 
         res.json(assessment);
     } catch (error) {
-        res.status(500).json({
-            message: error.message
-        });
+        next(error);
     }
 };
 
 //Delete Assessment
-const deleteAssessment = async (req, res) => {
+const deleteAssessment = async (req, res, next) => {
     try {
         const assessment = await Assessment.findById(
             req.params.id
@@ -74,9 +92,7 @@ const deleteAssessment = async (req, res) => {
             message: "Assessment deleted successfully"
         });
     } catch (error) {
-        res.status(500).json({
-            message: error.message
-        });
+       next(error);
     }
 };
 

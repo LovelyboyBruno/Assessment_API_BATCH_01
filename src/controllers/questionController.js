@@ -1,20 +1,18 @@
 const Question = require("../models/Question");
 
 //Create Question
-const createQuestion = async (req, res) => {
+const createQuestion = async (req, res, next) => {
     try {
         const question = await Question.create(req.body);
 
         res.status(201).json(question);
     } catch (error) {
-        res.status(500).json({
-            message: error.message,
-        });
+        next(error);
     }
 };
 
 //Get Questions For Assessment
-const getQuestions = async (req, res) => {
+const getQuestions = async (req, res, next) => {
     try {
         const questions = await Question.find({
             assessmentId: req.params.assessmentId,
@@ -22,9 +20,7 @@ const getQuestions = async (req, res) => {
 
         res.json(questions);
     } catch (error) {
-        res.status(500).json({
-            message: error.message,
-        });
+        next(error);
     }
 };
 
