@@ -8,6 +8,7 @@ const submissionRoutes = require("./routes/submissionRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const cors = require("cors");
 
 const errorHandler = require("./middleware/errorMiddleware");
 
@@ -16,6 +17,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
