@@ -12,6 +12,11 @@ const assessmentSchema = new mongoose.Schema
         type: String,
     },
 
+    duration: {
+        type: Number,
+        required: true,
+    },
+
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

@@ -31,7 +31,7 @@ const getDashboardStats = async (req, res, next) => {
         let averageScore = 0;
 
         if (submissions.length > 0) {
-            const totalScore = submission.reduce(
+            const totalScore = submissions.reduce(
                 (sum, submission) => sum + submission.score,
                 0
             );

@@ -3,10 +3,11 @@ const Assessment = require("../models/Assessment");
 //Create Assessment
 const createAssessment = async (req,res, next) => {
     try {
-        const { title, description } = req.body;
+        const { title, description, duration } = req.body;
         const assessment = await Assessment.create({
             title,
             description,
+            duration,
             createdBy: req.user.id,
         });
 
