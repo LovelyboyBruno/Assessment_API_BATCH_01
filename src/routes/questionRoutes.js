@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     createQuestion,
     getQuestions,
+    getAllQuestions,
 } = require("../controllers/questionController");
 
 const protect = require("../middleware/authMiddleware");
@@ -15,6 +16,13 @@ router.post(
     protect,
     authorize("admin"),
     createQuestion
+);
+
+router.get(
+    "/",
+    protect,
+    authorize("admin"),
+    getAllQuestions
 );
 
 //Any authenticated user

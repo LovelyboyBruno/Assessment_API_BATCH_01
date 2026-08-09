@@ -24,7 +24,21 @@ const getQuestions = async (req, res, next) => {
     }
 };
 
+const getAllQuestions = async (req, res, next) => {
+    try {
+
+        const questions = await Question.find()
+            .populate("assessmentId", "title");
+
+            res.json(questions);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     createQuestion,
     getQuestions,
+    getAllQuestions,
 };
