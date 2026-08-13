@@ -5,6 +5,7 @@ const {
     createQuestion,
     getQuestions,
     getAllQuestions,
+    updateQuestion,
 } = require("../controllers/questionController");
 
 const protect = require("../middleware/authMiddleware");
@@ -25,11 +26,19 @@ router.get(
     getAllQuestions
 );
 
+router.put(
+    "/:id",
+    protect,
+    authorize("admin"),
+    updateQuestion
+);
+
 //Any authenticated user
 router.get(
     "/:assessmentId",
     protect,
     getQuestions
 );
+
 
 module.exports = router;

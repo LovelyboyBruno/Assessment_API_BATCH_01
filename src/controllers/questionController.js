@@ -37,8 +37,29 @@ const getAllQuestions = async (req, res, next) => {
     }
 };
 
+const updateQuestion = async (req, res, next) => {
+    try {
+        const question = await Question.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidtors: true }
+        );
+
+        if (!question) {
+            return res.status(404).json({
+                message:"Question not found"
+            });
+        }
+
+        res.json(question);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     createQuestion,
     getQuestions,
     getAllQuestions,
+    updateQuestion,
 };
