@@ -6,6 +6,7 @@ const {
     getQuestions,
     getAllQuestions,
     updateQuestion,
+    deleteQuestion,
 } = require("../controllers/questionController");
 
 const protect = require("../middleware/authMiddleware");
@@ -31,6 +32,13 @@ router.put(
     protect,
     authorize("admin"),
     updateQuestion
+);
+
+router.delete(
+    "/:id",
+    protect,
+    authorize("admin"),
+    deleteQuestion
 );
 
 //Any authenticated user

@@ -42,7 +42,7 @@ const updateQuestion = async (req, res, next) => {
         const question = await Question.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidtors: true }
+            { new: true, runValidators: true }
         );
 
         if (!question) {
@@ -57,9 +57,27 @@ const updateQuestion = async (req, res, next) => {
     }
 };
 
+// Delete Question
+const deleteQuestion = async (req, res, next) => {
+    try {
+        const question = await Question.findByIdAndDelete(req.params.id);
+        if (!question) {
+            return res.status(404).json({
+                message: "Question not found"
+            });
+        }
+        res.json({
+            message: "Question deleted successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     createQuestion,
     getQuestions,
     getAllQuestions,
     updateQuestion,
+    deleteQuestion,
 };
