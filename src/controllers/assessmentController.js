@@ -53,6 +53,24 @@ const getAssessments = async (req, res, next) => {
     }
 };
 
+//Get AssessmentById
+const getAssessmentById = async (req, res, next) => {
+    try {
+        const assessment = await Assessment.findById(req.params.id)
+        .populate("createdBy", "name email");
+
+        if (!assessment) {
+            return res.status(404).json({
+                message: "Assessment not found"
+            });
+        }
+
+        res.json(assessment);
+    } catch (error) {
+        next(error);
+    }
+};
+
 //Update Assessment
 const updateAssessment = async (req, res, next) => {
     try {
@@ -97,9 +115,11 @@ const deleteAssessment = async (req, res, next) => {
     }
 };
 
+
 module.exports = {
     createAssessment,
     getAssessments,
+    getAssessmentById,
     updateAssessment,
     deleteAssessment,
 };

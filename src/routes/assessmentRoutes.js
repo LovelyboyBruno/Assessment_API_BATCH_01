@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     createAssessment,
     getAssessments,
+    getAssessmentById,
     updateAssessment,
     deleteAssessment,
 } = require("../controllers/assessmentController");
@@ -38,6 +39,12 @@ router.get(
     "/",
     protect,
     getAssessments
+);
+
+router.get(
+    "/:id",
+    protect,
+    getAssessmentById
 );
 
 module.exports = router;

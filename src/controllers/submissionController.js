@@ -47,23 +47,37 @@ const submitAssessment = async (req, res, next) => {
 
             if (
                 question &&
-                question.correctAnswer ===
-                studentAnswer.answer
+                question.correctAnswer.trim().toLowerCase() ===
+                studentAnswer.answer.trim().toLowerCase()
             ) {
                 score++;
             }
         });
+
+        const percentage =
+                questions.length > 0
+                    ? Math.round((score / questions.length) * 100)
+                    : 0;
+            
+            const result =
+                percentage >= 50
+                    ? "passed"
+                    : "failed";
 
         const submission = await Submission.create({
             studentId: req.user.id,
             assessmentId,
             answers,
             score,
+            percentage,
+            result,
             status: "scored",
         });
         res.status(201).json({
             message: "Assessment submitted successfully",
             score,
+            percentage,
+            result,
             submission,
         });
 

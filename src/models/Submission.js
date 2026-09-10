@@ -31,6 +31,17 @@ const mongoose = require('mongoose');
         default: 0,
     },
 
+    percentage: {
+        type: Number,
+        default: 0,
+    },
+
+    result: {
+        type: String,
+        enum: ["passed", "failed"],
+        default: "failed",
+    },
+
     status: {
         type: String,
         enum: [

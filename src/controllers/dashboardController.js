@@ -31,12 +31,12 @@ const getDashboardStats = async (req, res, next) => {
         let averageScore = 0;
 
         if (submissions.length > 0) {
-            const totalScore = submissions.reduce(
-                (sum, submission) => sum + submission.score,
+            const totalPercentage = submissions.reduce(
+                (sum, submission) => sum + submission.percentage,
                 0
             );
             averageScore = (
-                totalScore / submissions.length
+                totalPercentage / submissions.length
             ).toFixed(2);
         }
 
@@ -44,8 +44,8 @@ const getDashboardStats = async (req, res, next) => {
         let highestScore = 0;
 
         if (submissions.length > 0) {
-            highestScore = Math.max(
-                ...submissions.map((submission) => submission.score)
+            highestPercentage = Math.max(
+                ...submissions.map((submission) => submission.percentage)
             );
         }
 
@@ -53,14 +53,14 @@ const getDashboardStats = async (req, res, next) => {
         let lowestScore = 0;
 
         if (submissions.length > 0) {
-            lowestScore = Math.min(
-                ...submissions.map((s) => s.score)
+            lowestPercentage = Math.min(
+                ...submissions.map((s) => s.percentage)
             );
         }
 
         // Pass rate
         const passedStudents = submissions.filter(
-            (submission) => submission.score >= 50
+            (submission) => submission.percentage >= 50
         ).length;
 
         const passRate =
